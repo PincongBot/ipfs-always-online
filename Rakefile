@@ -12,6 +12,14 @@ def check_destination
   end
 end
 
+task :init do
+
+    unless Dir.exist? "~/.ipfs"
+      sh "ipfs init"
+    end
+
+end
+
 task :deploy do
 
     # Detect pull request

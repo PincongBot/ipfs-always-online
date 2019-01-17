@@ -25,7 +25,7 @@ install:
   - sudo cp /tmp/go-ipfs/ipfs /usr/local/bin/
 
 before_script:
-  - ipfs init
+  - bundle exec rake init --quiet
   - openssl aes-256-cbc -K $encrypted_0fefea1365f0_key -iv $encrypted_0fefea1365f0_iv -in ./key.enc -out ~/.ipfs/keystore/key -d
   - ipfs daemon &
 
