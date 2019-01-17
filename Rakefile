@@ -14,7 +14,7 @@ end
 
 task :init do
 
-    unless Dir.exist? "~/.ipfs"
+    unless Dir.exist? "/home/travis/.ipfs"
       sh "ipfs init"
     end
 
