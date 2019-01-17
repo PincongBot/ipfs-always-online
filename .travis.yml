@@ -1,0 +1,43 @@
+
+language: ruby
+
+git:
+  depth: 1
+
+branches:
+  only:
+  - master
+
+env:
+  global:
+    secure: "RnxqWA5i83Ja1RKg0O6009M/MZVboFDx1mfQKCM+MSyI73M7ui8zpLNs9Rd4uvoO5yeq3xQS2VjMtu9UlCMom3rLYF3ckc5Ep6Ee3MSBpiKYe5E52dZkOq64l5laFEAyRyoFk9MyT5oCjitlrC08YQ/Eb6HvNMsGSOnqS2ZU3ujcpK8efNY7snApO7sG9FOx1Tabw7TNmrehySF5rOcwPwbAkl8Cf78WyVGVcWImDu5ou1piBEnQkC6tBcpDjDV61z9nPyVenuYPK8CpR8rIBUxDmA8eSe7rl2r5bqdAyDfg1MY9Ogtv/eaVyrIMQ8/6OFxdd5lnG0xVVxLfXT9bkscjleA309h5iokB846VpHjzIvMk/IKh1tjIQ+Z05YtJTTY+lib+E0iFr2LPtWNL2Wm1lpE7NKDSDiOSJ/iXF3k5joQTseGtVwJ7naGTXotHJgSvrp+b23dSl+nE64GGwTO9CS6mMWKDxavXG+usLmSMyXs4NQY2mnsSmDrPnRRs/E1ixVbIlBWmEJuSV6FcXro4PrMIcaOri8kthf9T3y9Iy4VbwHBWCJcjhVqf1ML5570Pc+CrE8IcBHYsQ8t3grbOfU+Da8sw1Cq/17ThiheabLuEJ2AKeJNzbSRZbIIZaU2WbTPaDlJqUZEzcvIYw0R5gaRzLGiXe5kU/kgo9Aw="
+
+cache:
+  bundler: true
+  directories:
+    - $HOME/.ipfs/
+    - $HOME/pages/
+
+install:
+  - bundle install
+  - wget https://dist.ipfs.io/go-ipfs/v0.4.18/go-ipfs_v0.4.18_linux-amd64.tar.gz -O /tmp/ipfs.tar.gz
+  - cd /tmp/ && tar -xvf /tmp/ipfs.tar.gz && cd -
+  - sudo cp /tmp/go-ipfs/ipfs /usr/local/bin/
+
+before_script:
+  - ipfs init
+  - openssl aes-256-cbc -K $encrypted_0fefea1365f0_key -iv $encrypted_0fefea1365f0_iv -in ./key.enc -out ~/.ipfs/keystore/key -d
+  - ipfs daemon &
+
+script: bundle exec rake deploy --quiet
+
+jobs:  
+  include:
+    - stage: "1"
+    - stage: "2"
+    - stage: "3"
+
+# after_success:
+#   - bundle exec rake sync --quiet
+#   - bundle exec rake test --quiet
+#   - bundle exec rake sync[30] --quiet
