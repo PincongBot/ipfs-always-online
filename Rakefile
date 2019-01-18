@@ -14,7 +14,7 @@ end
 
 task :init do
 
-    unless Dir.exist? "#{ENV['HOME']}/.ipfs"
+    unless Dir.exist? "#{ENV['HOME']}/.ipfs/keystore"
       sh "ipfs init"
     end
 
